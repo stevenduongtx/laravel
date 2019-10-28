@@ -6,7 +6,7 @@
  * Time: 11:40 PM
  */
 
-namespace App;
+namespace LaravelForum;
 use Illuminate\Database\Eloquent\Model as BaseModel;
 
 class Model extends BaseModel
