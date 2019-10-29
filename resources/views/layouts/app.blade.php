@@ -9,8 +9,7 @@
 
     <title>{{ config('app.name', 'Laravel') }}</title>
 
-    <!-- Scripts -->
-    <script src="{{ asset('js/app.js') }}" defer></script>
+
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
@@ -18,6 +17,7 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    @yield('css')
 </head>
 <body>
     <div id="app">
@@ -72,17 +72,27 @@
             </div>
         </nav>
 
-        @auth
+        @if(!in_array(Request()->path(),['login','password/reset','register']))
             <main class="py-4 container">
                 <div class="row">
                     <div class="col-md-4">
-                        <ul class="list-group">
-                            @foreach($channels as $channel)
-                                <li class="list-group-item">
-                                    {{$channel->name}}
-                                </li>
-                            @endforeach
-                        </ul>
+                        <div class="card">
+                            @auth
+                                <a href="{{route('discussions.create')}}" class="btn btn-info mb-2" style="color:#ffff">Add Discussion</a>
+                            @else
+                                <a href="{{route('login')}}" class="btn btn-info mb-2" style="color:#ffff">Login to add discussion</a>
+                            @endauth
+                            <div class="card-header">Channels</div>
+                            <div class="card-body">
+                                <ul class="list-group">
+                                    @foreach($channels as $channel)
+                                        <li class="list-group-item">
+                                            {{$channel->name}}
+                                        </li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        </div>
                     </div>
                     <div class="col-md-8">
                         @yield('content')
@@ -91,15 +101,24 @@
 
 
             </main>
-
         @else
-            <main class="py-4">
-                @yield('content')
+            <main class="py-4 container">
+                <div>
+                    @yield('content')
+                </div>
             </main>
-        @endauth
+        @endif
 
-            </div>
+
+
+
+
 
     </div>
+
+
+    <!-- Scripts -->
+    <script src="{{ asset('js/app.js') }}"></script>
+    @yield('js')
 </body>
 </html>
